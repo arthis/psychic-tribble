@@ -1,0 +1,33 @@
+{
+  "version": "1.0.0-*",
+  "buildOptions": {
+    "debugType": "portable",
+    "emitEntryPoint": true,
+    "compilerName": "fsc",
+    "compile": {
+      "includeFiles": [
+        "Program.fs"
+      ]
+    }
+  },
+  "tools": {
+    "dotnet-compile-fsc": "1.0.0-preview2.1-*"
+  },
+  "dependencies":{
+	  "EventStore.ClientAPI.NetCore":"0.0.1-alpha",
+    "Eclosing.Core.Domain": {
+      "target": "project"
+    }
+  },
+  "frameworks": {
+    "netcoreapp1.1": {
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "type": "platform",
+          "version": "1.1.0-preview1-001100-00"
+        },
+        "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-160629"
+      }
+    }
+  }
+}

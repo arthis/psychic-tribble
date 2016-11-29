@@ -1,0 +1,4 @@
+[Fake]
+command = "build.sh"
+build = "build.fsx"
+target = "RunTests"

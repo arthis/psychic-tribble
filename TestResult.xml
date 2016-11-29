@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-run id="2" testcasecount="2" result="Failed" total="2" passed="1" failed="1" inconclusive="0" skipped="0" asserts="1" engine-version="3.4.1.0" clr-version="4.0.30319.42000" start-time="2016-09-29 08:28:49Z" end-time="2016-09-29 08:28:49Z" duration="0.332766">
+  <command-line><![CDATA["./packages/test/NUnit.ConsoleRunner/tools/nunit3-console.exe" "--noheader" "--timeout=1200000" "C:\sources\EC\RessourcesLocalisees\tests\RessourcesLocalisees.Tests\bin\Release\RessourcesLocalisees.Tests.dll" ]]></command-line>
+  <test-suite type="Assembly" id="0-1003" name="RessourcesLocalisees.Tests.dll" fullname="C:\sources\EC\RessourcesLocalisees\tests\RessourcesLocalisees.Tests\bin\Release\RessourcesLocalisees.Tests.dll" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2016-09-29 08:28:49Z" end-time="2016-09-29 08:28:49Z" duration="0.298042" total="2" passed="1" failed="1" inconclusive="0" skipped="0" asserts="1">
+    <environment framework-version="3.4.1.0" clr-version="4.0.30319.42000" os-version="Microsoft Windows NT 10.0.10586.0" platform="Win32NT" cwd="C:\sources\EC\RessourcesLocalisees" machine-name="OCTILLERY" user="yoann.remy" user-domain="LMC" culture="fr-FR" uiculture="fr-FR" os-architecture="x64" />
+    <settings>
+      <setting name="DefaultTimeout" value="1200000" />
+      <setting name="WorkDirectory" value="C:\sources\EC\RessourcesLocalisees" />
+      <setting name="ImageRuntimeVersion" value="4.0.30319" />
+      <setting name="ImageTargetFrameworkName" value=".NETFramework,Version=v4.5.2" />
+      <setting name="ImageRequiresX86" value="False" />
+      <setting name="ImageRequiresDefaultAppDomainAssemblyResolver" value="False" />
+      <setting name="NumberOfTestWorkers" value="4" />
+    </settings>
+    <properties>
+      <property name="_PID" value="24292" />
+      <property name="_APPDOMAIN" value="test-domain-" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="TestSuite" id="0-1004" name="RessourcesLocalisees" fullname="RessourcesLocalisees" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2016-09-29 08:28:49Z" end-time="2016-09-29 08:28:49Z" duration="0.277885" total="2" passed="1" failed="1" inconclusive="0" skipped="0" asserts="1">
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="0-1005" name="Tests" fullname="RessourcesLocalisees.Tests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2016-09-29 08:28:49Z" end-time="2016-09-29 08:28:49Z" duration="0.275008" total="2" passed="1" failed="1" inconclusive="0" skipped="0" asserts="1">
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestFixture" id="0-1000" name="EclosingTests" fullname="RessourcesLocalisees.Tests.EclosingTests" classname="RessourcesLocalisees.Tests.EclosingTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2016-09-29 08:28:49Z" end-time="2016-09-29 08:28:49Z" duration="0.268862" total="2" passed="1" failed="1" inconclusive="0" skipped="0" asserts="1">
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-case id="0-1001" name="print 42" fullname="RessourcesLocalisees.Tests.EclosingTests.print 42" methodname="print 42" classname="RessourcesLocalisees.Tests.EclosingTests" runstate="Runnable" seed="823611443" result="Passed" start-time="2016-09-29 08:28:49Z" end-time="2016-09-29 08:28:49Z" duration="0.039797" asserts="1">
+            <output><![CDATA[42
+]]></output>
+          </test-case>
+          <test-case id="0-1002" name="When we publish to a message using RabbitMq, we can receive it using First" fullname="RessourcesLocalisees.Tests.EclosingTests.When we publish to a message using RabbitMq, we can receive it using First" methodname="When we publish to a message using RabbitMq, we can receive it using First" classname="RessourcesLocalisees.Tests.EclosingTests" runstate="NotRunnable" seed="93261214" result="Failed" label="Invalid" start-time="2016-09-29 08:28:49Z" end-time="2016-09-29 08:28:49Z" duration="0.000907" asserts="0">
+            <properties>
+              <property name="_SKIPREASON" value="Method has non-void return value, but no result is expected" />
+            </properties>
+            <failure>
+              <message><![CDATA[Method has non-void return value, but no result is expected]]></message>
+            </failure>
+          </test-case>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

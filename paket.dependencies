@@ -1,0 +1,28 @@
+source https://nuget.org/api/v2
+
+
+nuget FSharp.Core redirects: force
+nuget NewtonSoft.Json
+nuget log4net
+nuget EventStore.Client
+nuget FSharp.Data
+
+group Build
+  source https://nuget.org/api/v2
+  
+  
+  nuget SourceLink.Fake
+  nuget FAKE
+  nuget FSharp.Formatting
+
+  github fsharp/FAKE modules/Octokit/Octokit.fsx
+
+  source https://nuget.org/api/v2
+  
+
+group Test
+  source https://www.nuget.org/api/v2
+
+  nuget Fuchu
+  nuget fuchu.adapter
+  nuget fuchu.fscheck
