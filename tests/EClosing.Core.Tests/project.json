@@ -6,7 +6,9 @@
     "compilerName": "fsc",
     "compile": {
       "includeFiles": [
-        "SequenceTests.fs"
+        "SequenceTests.fs",
+        "CommandProcessingAgentTests.fs",
+        "AgentTests.fs"
       ]
     }
   },

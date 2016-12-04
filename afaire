@@ -1,0 +1,32 @@
+namespace AgentFactoryTests
+
+open System 
+open Xunit
+open EClosing.Core.Domain.Types
+open EClosing.Core.Domain.Sequence
+open EClosing.Core.Domain.CommandProcessingAgent
+
+
+module Tests =
+
+    let logger  = 
+        {
+            Debug = fun s -> Console.WriteLine(s)
+        }
+
+    type fakeProcessor<'a>() =
+        interface Processor<'a> with
+            member this.Post cmd = ()
+
+
+    [<Fact>]
+    let ``Quand j'execute une commande sur un nouvel aggregat, je cree un nouvel agent`` ()=
+
+        logger.Debug "Quand je reussit l'execution d'une commande , je sauve un evenement"
+
+        let createProc id = new fakeProcessor<Guid>()  
+        
+        let agent = createAgent createProc id
+
+        Assert.  
+        

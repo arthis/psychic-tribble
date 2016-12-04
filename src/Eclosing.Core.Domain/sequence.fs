@@ -34,7 +34,7 @@ module Sequence =
    | SignataireEnleve of Signataire
    | SequenceCommencee
    | SequenceNonCommenceeParManqueDeSignataire
-   | SequenceDejaCommencee
+   
 
    // module private Assert =
 
@@ -55,11 +55,17 @@ module Sequence =
        //     <* validator (fun (b,g) -> not <| (g.lineUp |> Seq.append g.bench |> Seq.exists (fun x -> x=b.bearId))) ["err:this bear is already part of the game"] (bear,state)
    let execute state command=
        match command with 
-       | PlanifierSequence(s,d) -> Choice1Of2([SequencePlanifiee(s,d)])
-       | AjouterSignataire(s) -> Choice1Of2([SignataireAjoute(s)])
-       | EnleverSignataire(s) -> Choice1Of2([SignataireEnleve(s)])
+       | PlanifierSequence(s,d) -> 
+            if state.EstCommmencee then Choice2Of2("Sequence déjà commencée")
+            else Choice1Of2([SequencePlanifiee(s,d)])
+       | AjouterSignataire(s) -> 
+            if state.EstCommmencee then Choice2Of2("Sequence déjà commencée")
+            else Choice1Of2([SignataireAjoute(s)])
+       | EnleverSignataire(s) -> 
+            if state.EstCommmencee then Choice2Of2("Sequence déjà commencée")
+            else Choice1Of2([SignataireEnleve(s)])
        | CommencerSequence -> 
-           if state.EstCommmencee then Choice1Of2( [SequenceDejaCommencee])
+           if state.EstCommmencee then Choice2Of2("Sequence déjà commencée")
            elif not <| state.Signataires.Any() then Choice1Of2( [SequenceNonCommenceeParManqueDeSignataire])
            else Choice1Of2( [SequenceCommencee])
 
@@ -69,6 +75,7 @@ module Sequence =
        | SequencePlanifiee(s,d) -> { state with Signataires= s; Document =d }
        | SignataireAjoute(s) ->   { state with Signataires= s::state.Signataires }
        | SignataireEnleve(s) -> { state with Signataires = state.Signataires |> List.filter ( fun x -> x<> s ) }
-       | SequenceCommencee ->{state with EstCommmencee = true } 
+       | SequenceCommencee -> {state with EstCommmencee = true }
+       | SequenceNonCommenceeParManqueDeSignataire -> state 
        
 

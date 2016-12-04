@@ -212,6 +212,32 @@
           "lib/netstandard1.5/protobuf-net.dll": {}
         }
       },
+      "RabbitMQ.Client/4.1.1-rc2": {
+        "type": "package",
+        "dependencies": {
+          "System.Collections.Concurrent": "4.0.12",
+          "System.Console": "4.0.0",
+          "System.Diagnostics.Debug": "4.0.11",
+          "System.IO": "4.1.0",
+          "System.Linq": "4.1.0",
+          "System.Net.NameResolution": "4.0.0",
+          "System.Net.Security": "4.0.0",
+          "System.Net.Sockets": "4.1.0",
+          "System.Reflection.Extensions": "4.0.1",
+          "System.Reflection.TypeExtensions": "4.1.0",
+          "System.Runtime.Extensions": "4.1.0",
+          "System.Text.RegularExpressions": "4.1.0",
+          "System.Threading": "4.0.11",
+          "System.Threading.Thread": "4.0.0",
+          "System.Threading.Timer": "4.0.1"
+        },
+        "compile": {
+          "lib/netstandard1.5/RabbitMQ.Client.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.5/RabbitMQ.Client.dll": {}
+        }
+      },
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
         "type": "package",
         "runtimeTargets": {
@@ -1919,6 +1945,19 @@
         "lib/netstandard1.5/protobuf-net.dll",
         "protobuf-net.2.1.0.nupkg.sha512",
         "protobuf-net.nuspec"
+      ]
+    },
+    "RabbitMQ.Client/4.1.1-rc2": {
+      "sha512": "wcZi6CSAge2nZN7LU8KreTWL9Yi5/bL1FOguJ7hOPQ9ylARsdoJmGRn+PwGR/wVEI/hwMISqBUKztn3gqGqXKg==",
+      "type": "package",
+      "path": "RabbitMQ.Client/4.1.1-rc2",
+      "files": [
+        "RabbitMQ.Client.4.1.1-rc2.nupkg.sha512",
+        "RabbitMQ.Client.nuspec",
+        "lib/net451/RabbitMQ.Client.dll",
+        "lib/net451/RabbitMQ.Client.xml",
+        "lib/netstandard1.5/RabbitMQ.Client.dll",
+        "lib/netstandard1.5/RabbitMQ.Client.xml"
       ]
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
@@ -5825,7 +5864,8 @@
   "projectFileDependencyGroups": {
     "": [
       "EventStore.ClientAPI.NetCore >= 0.0.1-alpha",
-      "Newtonsoft.Json >= 9.0.1"
+      "Newtonsoft.Json >= 9.0.1",
+      "RabbitMQ.Client >= 4.1.1-rc2"
     ],
     ".NETStandard,Version=v1.6": [
       "Microsoft.FSharp.Core.netcore >= 1.0.0-alpha-160629",

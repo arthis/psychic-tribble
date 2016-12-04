@@ -129,5 +129,5 @@ module Tests =
         |> execute
         <| Commands.CommencerSequence 
         |> equals 
-        <| Choice1Of2([SequenceDejaCommencee]) 
+        <| Choice2Of2("Sequence déjà commencée") 
         
