@@ -18,9 +18,6 @@ module Tests =
         }
 
     
-        
-
-    
     [<Fact>]
     let ``Quand je souscrit à un exchange et un routing key , j'execute la fonction associée`` ()=
         logger.Debug "Quand je souscrit à un exchange et un routing key , j'execute la fonction associée"
@@ -65,6 +62,56 @@ module Tests =
         use subscriptionChannel = subscribe logger "testApp" conn exchangeName routingKey react
 
         publish logger "testApp" conn exchangeName routingKey msg
+
+        let timeOut = DateTime.Now.AddSeconds(5 |> float)
+
+        while (subscriptionNotFound && DateTime.Now<timeOut) do
+            Threading.Thread.Sleep(new TimeSpan(0,0,0,0,500))
+            
+        Assert.False(subscriptionNotFound)
+
+        logger.Debug ""
+        logger.Debug ""
+        logger.Debug ""
+
+    [<Fact>]
+    let ``Quand je dispatch un message, j'execute la fonction associée`` ()=
+        logger.Debug "Quand je dispatch un message, j'execute la fonction associée"
+        
+        let idAgg = Guid.NewGuid()
+
+        let seal (id:Guid) (version:int) : EClosing.Core.Domain.Types.Enveloppe = 
+            { 
+                MessageId = Guid.NewGuid()
+                CorrelationId = Guid.NewGuid()
+                AggregateId=id
+                Version = version
+            }
+
+        let msg = 
+            {
+                Enveloppe= seal idAgg 0
+                PayLoad = "some message of hope"
+            }  
+
+        let mutable subscriptionNotFound= true
+        let react (message: Message<string>) =
+            Assert.Equal(msg,message)
+            subscriptionNotFound <- false
+            ()
+       
+        let exchangeName =  sprintf "MyExchangeName%A" (Guid.NewGuid())
+        let routingKey =  sprintf "MyRoutingKey%A" (Guid.NewGuid())
+        let hostName = "localhost"
+        let username = "guest"
+        let password = "guest"
+        let appId = "testApp"
+
+        use dispatcher = new Dispatcher(hostName,username,password, appId, logger, exchangeName)
+
+        dispatcher.Subscribe(routingKey, react)
+        dispatcher.Publish(routingKey, msg)
+        
 
         let timeOut = DateTime.Now.AddSeconds(5 |> float)
 
