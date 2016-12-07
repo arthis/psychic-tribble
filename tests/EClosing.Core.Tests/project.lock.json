@@ -8268,6 +8268,7 @@
   "projectFileDependencyGroups": {
     "": [
       "Eclosing.Core.Domain",
+      "RabbitMQ.Client >= 4.1.1-rc2",
       "dotnet-test-xunit >= 1.0.0-rc2-192208-24",
       "xunit >= 2.1.0"
     ],
