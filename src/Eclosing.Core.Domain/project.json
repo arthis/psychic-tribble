@@ -10,7 +10,8 @@
         "validator.fs",
         "sequence.fs",
         "agents.fs",
-        "persistence.fs"
+        "persistence.fs",
+        "rabbitMqProvider.fs"
       ]
     }
   },

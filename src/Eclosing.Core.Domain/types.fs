@@ -31,3 +31,9 @@ module Types =
             get : Guid -> 'a option
             set : Guid -> 'a -> unit
         }
+
+    type CommandReactor<'a> = 
+        {   
+            IsCommandValid : Message<'a> -> bool
+            React : Message<'a> -> unit
+        }

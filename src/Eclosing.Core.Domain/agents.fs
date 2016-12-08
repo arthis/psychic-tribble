@@ -38,12 +38,12 @@ module CommandProcessingAgent =
                     let enveloppe = seal id newVersion
                     save  enveloppe id evts
 
-                    loop newState newVersion
+                    return!  loop newState newVersion
                 |Choice2Of2(reason) ->
                     sprintf "result reason... %A" reason
                     |> l.Debug
                     log id version msg reason
-                    loop state version
+                    return! loop state version 
   
              }
 
@@ -58,11 +58,51 @@ module CommandProcessingAgent =
         interface MsgProcessor<'a> with 
             member this.Post(value) =
                 agent.Post(value)
+
+    
+    type ConsumerAgent<'a,'b,'c,'d when 'd:> MsgProcessor<'a>>(l : Logger,p:Persistence<'d>,f: Guid ->'d) =
+
+        let agentId = Guid.NewGuid()
+        
+
+        let hydrateAgent id =
+                match p.get id with
+                | Some(a) -> a
+                | None -> 
+                    let a  = f id
+                    p.set id a
+                    a
+
+        let agent = Agent<Message<'a>>.Start(fun inbox -> 
+             let rec loop cmdsProcessed= async {
+
+                let! msg = inbox.Receive()
+
+                sprintf "Consumer agent receiving msg... %A" msg
+                |> l.Debug
+
+                if (cmdsProcessed |> List.contains msg.Enveloppe.MessageId) then
+                    sprintf "discqrding msg... %A" msg
+                    |> l.Debug
+                    return! loop cmdsProcessed     
+                
+                let a = hydrateAgent msg.Enveloppe.AggregateId
+
+                a.Post(msg)
+
+                let newCmds = msg.Enveloppe.MessageId::cmdsProcessed
+
+                return! loop newCmds
+             }
+
+             loop [] 
+              
+        )
+
+        member this.AgentId = agentId
+
+        interface MsgProcessor<'a> with 
+            member this.Post(value) =
+                agent.Post(value)
  
-    let hydrateAgent<'a,'b,'c> (p:Persistence<CommandProcessor<'a,'b,'c>>) (f: Guid ->CommandProcessor<'a,'b,'c>)  id =
-        match p.get id with
-        | Some(a) -> a
-        | None -> 
-            let a  = f id
-            p.set id a
-            a
+    
