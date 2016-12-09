@@ -55,7 +55,7 @@ module Tests =
         let timeOut = DateTime.Now.AddSeconds(5 |> float)
         while closureval do
             if DateTime.Now>timeOut then Assert.Equal("time Out", "boom!")
-            Threading.Thread.Sleep(new TimeSpan(0,0,0,0,500)) 
+            Threading.Thread.Sleep(new TimeSpan(0,0,0,0,10)) 
             
         logger.Debug ""
         logger.Debug ""
@@ -108,7 +108,7 @@ module Tests =
         let timeOut = DateTime.Now.AddSeconds(5 |> float)
         while closureval do
             if DateTime.Now>timeOut then Assert.Equal("time Out", "boom!")
-            Threading.Thread.Sleep(new TimeSpan(0,0,0,0,500))
+            Threading.Thread.Sleep(new TimeSpan(0,0,0,0,10))
 
         logger.Debug ""
         logger.Debug ""
@@ -156,7 +156,7 @@ module Tests =
         let timeOut = DateTime.Now.AddSeconds(5 |> float)
         while closureval do
             if DateTime.Now>timeOut then Assert.Equal("time Out", "boom!")
-            Threading.Thread.Sleep(new TimeSpan(0,0,0,0,500)) 
+            Threading.Thread.Sleep(new TimeSpan(0,0,0,0,10)) 
             
         logger.Debug ""
         logger.Debug ""

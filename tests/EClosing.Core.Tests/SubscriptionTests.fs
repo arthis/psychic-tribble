@@ -66,7 +66,7 @@ module Tests =
         let timeOut = DateTime.Now.AddSeconds(5 |> float)
 
         while (subscriptionNotFound && DateTime.Now<timeOut) do
-            Threading.Thread.Sleep(new TimeSpan(0,0,0,0,500))
+            Threading.Thread.Sleep(new TimeSpan(0,0,0,0,10))
             
         Assert.False(subscriptionNotFound)
 
@@ -109,7 +109,7 @@ module Tests =
 
         use dispatcher = new Dispatcher(hostName,username,password, appId, logger, exchangeName)
 
-        dispatcher.Subscribe(routingKey, react)
+        dispatcher.Subscribe(routingKey, react)|> ignore
         dispatcher.Publish(routingKey, msg)
         
 
@@ -119,6 +119,65 @@ module Tests =
             Threading.Thread.Sleep(new TimeSpan(0,0,0,0,500))
             
         Assert.False(subscriptionNotFound)
+
+        logger.Debug ""
+        logger.Debug ""
+        logger.Debug ""
+
+
+    [<Fact>]
+    let ``Quand je dispatch deux messages differents, j'execute deux fois la fonction associée`` ()=
+        logger.Debug "Quand je dispatch deux messages, j'execute deux fois la fonction associée"
+        
+        let idAgg = Guid.NewGuid()
+
+        let seal (id:Guid) (version:int) : EClosing.Core.Domain.Types.Enveloppe = 
+            { 
+                MessageId = Guid.NewGuid()
+                CorrelationId = Guid.NewGuid()
+                AggregateId=id
+                Version = version
+            }
+
+        let msg1 = 
+            {
+                Enveloppe= seal idAgg 0
+                PayLoad = "some message of hope"
+            }  
+
+        let msg2 = 
+            {
+                Enveloppe= seal idAgg 0
+                PayLoad = "some message of joy"
+            }  
+
+        let mutable count = 0
+
+        let react (message: Message<string>) =
+            count <- count + 1 
+            ()
+       
+        let exchangeName =  sprintf "MyExchangeName%A" (Guid.NewGuid())
+        let routingKey =  sprintf "MyRoutingKey%A" (Guid.NewGuid())
+        let hostName = "localhost"
+        let username = "guest"
+        let password = "guest"
+        let appId = "testApp"
+
+        use dispatcher = new Dispatcher(hostName,username,password, appId, logger, exchangeName)
+
+        dispatcher.Subscribe(routingKey, react)|> ignore
+
+        dispatcher.Publish(routingKey, msg1)
+        dispatcher.Publish(routingKey, msg2)
+        
+
+        let timeOut = DateTime.Now.AddSeconds(5 |> float)
+
+        while (count<2 && DateTime.Now<timeOut) do
+            Threading.Thread.Sleep(new TimeSpan(0,0,0,0,10))
+            
+        Assert.Equal(2, count)
 
         logger.Debug ""
         logger.Debug ""

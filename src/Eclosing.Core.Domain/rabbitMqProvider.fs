@@ -37,7 +37,7 @@ module RabbitMq =
              |> react 
         )
         
-        channel.BasicConsume(queue.QueueName,true,consumer)
+        channel.BasicConsume(queue.QueueName,true,consumer) |> ignore
          
         channel
 

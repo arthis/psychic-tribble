@@ -10,7 +10,8 @@
         "CommandProcessingAgentTests.fs",
         "AgentTests.fs",
         "ConsumerAgentTests.fs",
-        "SubscriptionTests.fs"
+        "SubscriptionTests.fs",
+        "EventStoreTests.fs"
       ]
     }
   },
@@ -30,7 +31,7 @@
       "dependencies": {
         "Microsoft.NETCore.App": {
           "type": "platform",
-          "version": "1.1.0"
+          "version": "1.1.0-preview1-001100-00"
         },
         "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-160629"
       },

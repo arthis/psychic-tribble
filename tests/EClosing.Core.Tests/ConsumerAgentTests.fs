@@ -69,7 +69,7 @@ module Tests =
         let timeOut = DateTime.Now.AddSeconds(5 |> float)
         while closureval do
             if DateTime.Now>timeOut then Assert.Equal("time Out", "boom!")
-            Threading.Thread.Sleep(new TimeSpan(0,0,0,0,500))
+            Threading.Thread.Sleep(new TimeSpan(0,0,0,0,10))
             
         Assert.Equal(1,count)
 
@@ -84,7 +84,7 @@ module Tests =
 
         let logger  = 
             {
-                Debug = fun s -> () //Console.WriteLine(s)
+                Debug = fun s -> ()//Console.WriteLine(s)
             }
 
         logger.Debug "Quand je recois un message deux fois, il n'est executé qu'une seule fois"
@@ -114,7 +114,8 @@ module Tests =
             logger.Debug <| sprintf "closure count before %i " count
             count <- count + 1
             logger.Debug <| sprintf "closure count after %i " count
-            closureval <- false
+            if count=2 then
+                closureval <- false
 
         let createProcessor = fun id ->  new fakeProcessor<string>(closure)
 
@@ -131,9 +132,11 @@ module Tests =
         logger.Debug <| sprintf "post message 2 "
         (c:>MsgProcessor<string>).Post(msg)
 
-        let timeOut = DateTime.Now.AddSeconds(5 |> float)
-        while  DateTime.Now<timeOut do
-            Threading.Thread.Sleep(new TimeSpan(0,0,0,0,500))
+        let timeOut = DateTime.Now.AddMilliseconds(900 |> float)
+
+        logger.Debug <| sprintf "timeout %A" timeOut
+        while  closureval  && DateTime.Now<timeOut do
+            Threading.Thread.Sleep(new TimeSpan(0,0,0,0,50))
 
         Assert.Equal(1,count)
 
