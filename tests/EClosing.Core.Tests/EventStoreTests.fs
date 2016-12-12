@@ -30,9 +30,9 @@ module Tests =
                 }
 
 
-            let connectionstrings = "tcp://127.0.0.1:1113"
-            let username = "yoann"
-            let password = "yoann"
+            let connectionstrings = "tcp://localhost:1113"
+            let username = "admin"
+            let password = "changeit"
 
             use! conn = create connectionstrings username password
 
@@ -47,7 +47,7 @@ module Tests =
                     PayLoad = "test Message"
                 }
 
-            do! save conn streamName enveloppe [msg]
+            do! save conn streamName msg.Enveloppe.AggregateId msg.Enveloppe.Version [msg]
 
             logger.Debug <| sprintf "message saved"
 

@@ -19,28 +19,28 @@ module EventSourceRepo =
 
     let createNameAgg streamName id = sprintf "%s-%s" streamName (id.ToString())
 
-    let save (conn:IEventStoreConnection) name seal evts =
+    let save (conn:IEventStoreConnection) name id version (evts:Message<_> list) =
         async {
-            let envInitial = seal 0;
+            
 
             let events = 
                 evts
                 |> List.mapi (fun index event ->
                     let typeEvts = event.GetType().Name
                     let data=
-                        event 
+                        event.PayLoad 
                         |> JsonConvert.SerializeObject
                         |> Encoding.UTF8.GetBytes 
                     let enveloppeMetadata =  
-                        seal(0) 
+                        event.Enveloppe 
                         |> JsonConvert.SerializeObject
                         |> Encoding.UTF8.GetBytes 
-                    new EventData(envInitial.AggregateId,typeEvts,true, data,enveloppeMetadata)
+                    new EventData(event.Enveloppe.AggregateId,typeEvts,true, data,enveloppeMetadata)
                 )
 
 
-            let expectedVersion = envInitial.Version
-            let streamName = createNameAgg name (envInitial.AggregateId.ToString())
+            let expectedVersion = version
+            let streamName = createNameAgg name id
 
             do! conn.AppendToStreamAsync(streamName,-1,events) 
                 |> Async.AwaitTask 
