@@ -11,7 +11,7 @@ module Tests =
 
     let logger  = 
         {
-            Debug = fun s -> Console.WriteLine(s)
+            Debug = fun s -> ()//Console.WriteLine(s)
         }
 
     type fakeProcessor<'a>() =

@@ -8,10 +8,10 @@
       "includeFiles": [
         "SequenceTests.fs",
         "CommandProcessingAgentTests.fs",
-        "AgentTests.fs",
         "ConsumerAgentTests.fs",
         "SubscriptionTests.fs",
-        "EventStoreTests.fs"
+        "EventStoreTests.fs",
+        "AppIntegrationTests.fs"
       ]
     }
   },

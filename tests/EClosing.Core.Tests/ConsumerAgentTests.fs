@@ -1,4 +1,4 @@
-namespace ConsumerAgentTests
+namespace ConsumwAgentTests
 
 open System 
 open Xunit
@@ -54,7 +54,9 @@ module Tests =
             count <- count + 1
             closureval <- false
 
-        let createProcessor = fun id ->  new fakeProcessor<string>(closure)
+        let createProcessor = fun id -> async {
+            return new fakeProcessor<string>(closure)
+        }  
 
         let c = new ConsumerAgent<string,string,string,fakeProcessor<string>>(logger, memoryPersistence, createProcessor)
 
@@ -117,7 +119,9 @@ module Tests =
             if count=2 then
                 closureval <- false
 
-        let createProcessor = fun id ->  new fakeProcessor<string>(closure)
+        let createProcessor = fun id ->  async {
+            return new fakeProcessor<string>(closure)
+        }
 
         let c = new ConsumerAgent<string,string,string,fakeProcessor<string>>(logger, memoryPersistence, createProcessor)
 

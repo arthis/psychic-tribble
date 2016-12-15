@@ -32,8 +32,15 @@ module Types =
             set : Guid -> 'a -> unit
         }
 
-    type CommandReactor<'a> = 
+    type Subscription<'cmd,'state,'evt> = 
         {   
-            IsCommandValid : Message<'a> -> bool
-            React : Message<'a> -> unit
+            RoutingKey : string
+            AggregateName : string
+            IsCommandValid : Message<'cmd> -> bool
+            Apply : 'state-> 'evt -> 'state
+            Execute : 'state -> 'cmd -> Choice<'evt list, string>
+            InitialState :  'state
         }
+
+    
+        

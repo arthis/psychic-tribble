@@ -11,7 +11,8 @@
         "sequence.fs",
         "agents.fs",
         "persistence.fs",
-        "rabbitMqProvider.fs"
+        "rabbitMqProvider.fs",
+        "app.fs"
       ]
     }
   },

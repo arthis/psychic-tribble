@@ -70,7 +70,6 @@ module RabbitMq =
 
     type Dispatcher(hostName,userName,password, appId, logger, exchangeName) =
 
-        let channels: IModel list = []
         let factory = new ConnectionFactory()
 
         do  
@@ -85,13 +84,11 @@ module RabbitMq =
         let conn = factory.CreateConnection()
  
         member this.Subscribe<'a>(routingKey, react: 'a-> unit) =
-            let channel = subscribe<'a> logger appId conn exchangeName routingKey react
-            channel::channels
+            subscribe<'a> logger appId conn exchangeName routingKey react
             
         member this.Publish(routingKey, msg) =
             publish logger appId conn exchangeName routingKey msg
 
         interface IDisposable with
             member this.Dispose() =
-                channels |> Seq.iter (fun c -> c.Dispose())
                 conn.Dispose()

@@ -111,6 +111,8 @@ module Tests =
 
         dispatcher.Subscribe(routingKey, react)|> ignore
         dispatcher.Publish(routingKey, msg)
+
+        
         
 
         let timeOut = DateTime.Now.AddSeconds(5 |> float)

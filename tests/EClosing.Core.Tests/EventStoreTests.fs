@@ -187,7 +187,7 @@ module Tests =
         async {
             let logger  = 
                 {
-                    Debug = fun s -> Console.WriteLine(s)
+                    Debug = fun s -> ()//Console.WriteLine(s)
                 }        
 
             logger.Debug "Quand je sauve un message, je peux lire ce message"

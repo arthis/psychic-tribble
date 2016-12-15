@@ -13,7 +13,7 @@ module CommandProcessingAgent =
     
 
     // type CommandProcessor<'a>(hydrate, save, log, execCmd, applyTo, enveloppe) =
-    type CommandProcessor<'a,'b,'c>(l : Logger,hydrate:Guid-> int-> 'b,save:Enveloppe-> Guid -> 'c list-> unit,log, execCmd :'b -> 'a -> Choice<'c list,string> , applyTo : 'b-> 'c -> 'b, seal: Guid-> int -> Enveloppe, id) =
+    type CommandProcessor<'a,'b,'c>(l : Logger,save: Guid -> int-> 'c list-> Async<unit>,log: Guid-> int-> Message<'a>  ->string -> Async<unit>, execCmd :'b -> 'a -> Choice<'c list,string> , applyTo : 'b-> 'c -> 'b, seal: Guid-> int -> Enveloppe, agg : 'b, v : int, id) =
         let agentId = Guid.NewGuid()
 
         
@@ -36,21 +36,17 @@ module CommandProcessingAgent =
                     let newVersion = version + evts.Length
                     
                     let enveloppe = seal id newVersion
-                    save  enveloppe id evts
+                    do! save id newVersion evts
 
                     return!  loop newState newVersion
                 |Choice2Of2(reason) ->
                     sprintf "result reason... %A" reason
                     |> l.Debug
-                    log id version msg reason
+                    do! log id version msg reason
                     return! loop state version 
   
              }
-
-             let agg = hydrate id 0
-
-             loop agg 0
-              
+             loop agg v
         )
 
         member this.AgentId = agentId
@@ -58,20 +54,30 @@ module CommandProcessingAgent =
         interface MsgProcessor<'a> with 
             member this.Post(value) =
                 agent.Post(value)
-
+ 
+    let createCommandProcessor l hydrate save (businessLog: Guid-> int-> Message<'a>  ->string -> Async<unit>) execCmd applyTo seal id =
+        async {
+            
+            let! (agg,version) = hydrate id
+            let agent = new CommandProcessor<_,_,_>(l, save,businessLog,execCmd,applyTo,seal,agg,version, id)
+            return agent
+        }
+         
     
-    type ConsumerAgent<'a,'b,'c,'d when 'd:> MsgProcessor<'a>>(l : Logger,p:Persistence<'d>,f: Guid ->'d) =
+    type ConsumerAgent<'a,'b,'c,'d when 'd:> MsgProcessor<'a>>(l : Logger,p:Persistence<'d>,f: Guid ->Async<'d>) =
 
         let agentId = Guid.NewGuid()
         
 
-        let hydrateAgent id =
-                match p.get id with
-                | Some(a) -> a
+        let hydrateAgent id = async {
+            match p.get id with
+                | Some(a) -> return a
                 | None -> 
-                    let a  = f id
+                    let! a  = f id
                     p.set id a
-                    a
+                    return a
+        }
+                
 
         let agent = Agent<Message<'a>>.Start(fun inbox -> 
              let rec loop cmdsProcessed= async {
@@ -86,7 +92,7 @@ module CommandProcessingAgent =
                     |> l.Debug
                     return! loop cmdsProcessed     
                 
-                let a = hydrateAgent msg.Enveloppe.AggregateId
+                let! a = hydrateAgent msg.Enveloppe.AggregateId
 
                 a.Post(msg)
 
