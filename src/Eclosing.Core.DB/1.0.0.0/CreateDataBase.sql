@@ -11,9 +11,9 @@ END
 
 /****** Object:  Database [{{dbName}}]    Script Date: 08/04/2016 09:12:54 ******/
 CREATE DATABASE [{{dbName}}] ON  PRIMARY 
-( NAME = N'{{dbName}}', FILENAME = N'{{dataPath}}\{{dbName}}.mdf' , SIZE = 5120KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
+( NAME = N'{{dbName}}', FILENAME = N'{{dataPath}}/{{dbName}}.mdf' , SIZE = 5120KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
  LOG ON 
-( NAME = N'{{dbName}}_log', FILENAME = N'{{logPath}}\{{dbName}}_log.ldf' , SIZE = 1024KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
+( NAME = N'{{dbName}}_log', FILENAME = N'{{logPath}}/{{dbName}}_log.ldf' , SIZE = 1024KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
 GO
 
 ALTER DATABASE [{{dbName}}] SET COMPATIBILITY_LEVEL = 100

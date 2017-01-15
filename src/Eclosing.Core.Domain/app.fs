@@ -45,7 +45,7 @@ module App =
 
         let createProcessor = fun id ->  createCommandProcessor app.Logger hydrate save loggerBusiness s.Execute s.Apply seal id
 
-        let c = new ConsumerAgent<'cmd,'state,'evt,CommandProcessor<'cmd,'state,'evt>>(app.Logger, memoryPersistence, createProcessor)
+        let c = new ConsumerAgent<'cmd,'state,'evt,CommandProcessor<'cmd,'state,'evt>>(app.Logger, memoryPersistence, createProcessor,  sprintf "discarding msg %A" >> app.Logger.Debug )
 
         let  subscription = app.Dispatcher.Subscribe(s.RoutingKey,fun msg -> (c:>MsgProcessor<'cmd>).Post(msg))
 

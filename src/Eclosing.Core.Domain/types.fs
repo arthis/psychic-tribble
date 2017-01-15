@@ -20,6 +20,14 @@ module Types =
             Version : int
         }
 
+    let seal (id:Guid) (version:int)= 
+        { 
+            MessageId = Guid.NewGuid()
+            CorrelationId = Guid.NewGuid()
+            AggregateId=id
+            Version = version
+        }
+
     type Message<'a> = 
         {
             Enveloppe : Enveloppe

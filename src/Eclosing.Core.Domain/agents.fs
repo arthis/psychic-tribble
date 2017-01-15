@@ -64,7 +64,7 @@ module CommandProcessingAgent =
         }
          
     
-    type ConsumerAgent<'a,'b,'c,'d when 'd:> MsgProcessor<'a>>(l : Logger,p:Persistence<'d>,f: Guid ->Async<'d>) =
+    type ConsumerAgent<'a,'b,'c,'d when 'd:> MsgProcessor<'a>>(l : Logger,p:Persistence<'d>,f: Guid ->Async<'d>, discardingMessage : Message<'a> -> unit) =
 
         let agentId = Guid.NewGuid()
         
@@ -88,8 +88,9 @@ module CommandProcessingAgent =
                 |> l.Debug
 
                 if (cmdsProcessed |> List.contains msg.Enveloppe.MessageId) then
-                    sprintf "discqrding msg... %A" msg
+                    sprintf "discarding msg... %A" msg
                     |> l.Debug
+                    discardingMessage msg
                     return! loop cmdsProcessed     
                 
                 let! a = hydrateAgent msg.Enveloppe.AggregateId

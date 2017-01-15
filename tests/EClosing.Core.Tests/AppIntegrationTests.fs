@@ -2,6 +2,7 @@ namespace AppIntegrationTests
 
 open System 
 open Xunit
+open Types
 open EClosing.Core.Domain.Types
 open EClosing.Core.Domain.Sequence
 open EClosing.Core.Domain.CommandProcessingAgent
@@ -20,14 +21,14 @@ module Tests =
  
     [<Fact>]
     let ``Given a proper app, when  I publish a message,I expect an event to be saved`` ()= 
-        async {
+        toFact <| async {
 
             logger.Debug "Given a proper app, when  I publish a message,I expect an event to be saved"
 
             //settings
             let exchangeName =  sprintf "MyAppExchange-%A" (Guid.NewGuid())
 
-            use dispatcher =  new Dispatcher("localhost","guest","guest", "MyApp", logger, exchangeName)
+            use dispatcher =  new Dispatcher("localhost", "guest","guest", "MyApp", logger, exchangeName)
             use! conn =  EventSourceRepo.create "tcp://localhost:1113" "admin" "changeit"    
         
             let mySubscription =
@@ -62,21 +63,9 @@ module Tests =
                     Enveloppe= enveloppe 
                     PayLoad = Commands.PlanifierSequence(signataires,document)
                 }  
+
             dispatcher.Publish("Sequence",msg) 
 
-            let timeOut = DateTime.Now.AddSeconds(5 |> float)
-
-            while DateTime.Now<timeOut do
-                //verify event in getEventStore
-                //Assert.Equal(e, SequencePlanifiee(signataires,document))
-                // timoe out -> boom
-                Threading.Thread.Sleep(new TimeSpan(0,0,0,0,10))
-
-            
-            
-                
-            logger.Debug ""
-            logger.Debug ""
-            logger.Debug ""
-
-        } |> Async.RunSynchronously
+            //verify event in getEventStore
+            //Assert.Equal(e, SequencePlanifiee(signataires,document))
+        } 

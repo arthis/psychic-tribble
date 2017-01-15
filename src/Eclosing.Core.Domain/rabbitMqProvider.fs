@@ -13,6 +13,9 @@ open System.Text
 
 module RabbitMq =
 
+    open System.Threading
+    open System.Threading.Tasks
+
     let subscribe<'a> logger appId (conn:IConnection) exchangeName routingKey react =
         sprintf "starting subscription on exchangeName:%s routingKey:%s" exchangeName routingKey 
         |> logger.Debug
@@ -68,7 +71,7 @@ module RabbitMq =
 
         logger.Debug("message published") 
 
-    type Dispatcher(hostName,userName,password, appId, logger, exchangeName) =
+    type Dispatcher(hostName, userName,password, appId, logger, exchangeName) =
 
         let factory = new ConnectionFactory()
 
@@ -85,6 +88,15 @@ module RabbitMq =
  
         member this.Subscribe<'a>(routingKey, react: 'a-> unit) =
             subscribe<'a> logger appId conn exchangeName routingKey react
+        member this.First<'a>(routingKey, react: 'a-> unit, token: CancellationToken) =
+            let tcs = new TaskCompletionSource<'a>()
+            let f msg =
+                react msg
+                tcs.SetResult(msg)
+
+            token.Register(fun (_) ->  tcs.SetCanceled()) |> ignore
+            subscribe<'a> logger appId conn exchangeName routingKey f |> ignore
+            Async.AwaitTask tcs.Task
             
         member this.Publish(routingKey, msg) =
             publish logger appId conn exchangeName routingKey msg

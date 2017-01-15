@@ -2,31 +2,22 @@ namespace EventStoreTests
 
 open System 
 open Xunit
+open Types
 open EClosing.Core.Domain.Types
 open EClosing.Core.Domain.EventSourceRepo
    
 
 module Tests =
 
-    
-
     [<Fact>]
     let ``Quand je recupere un repo, je peux sauvegarde un evenement`` ()= 
-        async {
+        toFact <| async {
             let logger  = 
                 {
                     Debug = fun s -> () //Console.WriteLine(s)
                 }        
 
             logger.Debug "Quand je recupere un repo, je peux sauvegarde un evenement"
-
-            let seal (id:Guid) (version:int) : EClosing.Core.Domain.Types.Enveloppe = 
-                { 
-                    MessageId = Guid.NewGuid()
-                    CorrelationId = Guid.NewGuid()
-                    AggregateId=id
-                    Version = version
-                }
 
             let connectionstrings = "tcp://localhost:1113"
             let username = "admin"
@@ -46,27 +37,17 @@ module Tests =
 
             logger.Debug <| sprintf "message saved"
 
-        }  |> Async.RunSynchronously
+        } 
 
     [<Fact>]
     let ``Quand je recupere un repo, je peux sauvegarde deux evenements dans un unique stream`` ()= 
-        async {
+        toFact <| async {
             let logger  = 
                 {
                     Debug = fun s -> () //Console.WriteLine(s)
                 }        
 
             logger.Debug "Quand je recupere un repo, je peux sauvegarde deux evenements dans un unique stream"
-
-
-            let seal (id:Guid) (version:int) : EClosing.Core.Domain.Types.Enveloppe = 
-                { 
-                    MessageId = Guid.NewGuid()
-                    CorrelationId = Guid.NewGuid()
-                    AggregateId=id
-                    Version = version
-                }
-
 
             let connectionstrings = "tcp://localhost:1113"
             let username = "admin"
@@ -88,27 +69,18 @@ module Tests =
 
             logger.Debug <| sprintf "message saved"
 
-        }  |> Async.RunSynchronously
+        }  
 
             
     [<Fact>]
     let ``Quand je recupere un repo, je peux sauvegarder deux fois consecutive un evenement`` ()= 
-        async {
+        toFact <| async {
             let logger  = 
                 {
                     Debug = fun s -> () //Console.WriteLine(s)
                 }        
 
             logger.Debug "Quand je recupere un repo, je peux sauvegarder deux fois consecutive un evenement"
-
-
-            let seal (id:Guid) (version:int) : EClosing.Core.Domain.Types.Enveloppe = 
-                { 
-                    MessageId = Guid.NewGuid()
-                    CorrelationId = Guid.NewGuid()
-                    AggregateId=id
-                    Version = version
-                }
 
 
             let connectionstrings = "tcp://localhost:1113"
@@ -132,7 +104,7 @@ module Tests =
 
             logger.Debug <| sprintf "message saved"
 
-        }  |> Async.RunSynchronously
+        }  
 
 
     type FakeEvent =
@@ -141,22 +113,13 @@ module Tests =
 
     [<Fact>]
     let ``Quand je recupere un repo, je peux sauvegarde deux fois consecutive deux evenements de type distinct`` ()= 
-        async {
+        toFact <| async {
             let logger  = 
                 {
                     Debug = fun s -> () //Console.WriteLine(s)
                 }        
 
             logger.Debug "Quand je recupere un repo, je peux sauvegarde deux fois consecutive deux evenements de type distinct"
-
-
-            let seal (id:Guid) (version:int) : EClosing.Core.Domain.Types.Enveloppe = 
-                { 
-                    MessageId = Guid.NewGuid()
-                    CorrelationId = Guid.NewGuid()
-                    AggregateId=id
-                    Version = version
-                }
 
 
             let connectionstrings = "tcp://localhost:1113"
@@ -180,11 +143,11 @@ module Tests =
 
             logger.Debug <| sprintf "message saved"
 
-        }  |> Async.RunSynchronously
+        }  
 
     [<Fact>]
     let ``Quand je sauve un message, je peux lire ce message`` ()= 
-        async {
+        toFact <| async {
             let logger  = 
                 {
                     Debug = fun s -> ()//Console.WriteLine(s)
@@ -192,13 +155,6 @@ module Tests =
 
             logger.Debug "Quand je sauve un message, je peux lire ce message"
 
-            let seal (id:Guid) (version:int) : EClosing.Core.Domain.Types.Enveloppe = 
-                { 
-                    MessageId = Guid.NewGuid()
-                    CorrelationId = Guid.NewGuid()
-                    AggregateId=id
-                    Version = version
-                }
 
             let connectionstrings = "tcp://localhost:1113"
             let username = "admin"
@@ -226,4 +182,4 @@ module Tests =
 
             
 
-        }  |> Async.RunSynchronously
+        }  

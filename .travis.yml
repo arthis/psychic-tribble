@@ -1,9 +1,23 @@
 language: csharp
-
+mono: none
+dotnet: 1.0.0-preview2-003131
 sudo: false  # use the new container-based Travis infrastructure 
 
 before_install:
   - chmod +x build.sh
- 
+  - curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add 
+  - curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list | sudo tee /etc/apt/sources.list.d/msprod.list
+  - sudo apt-get update 
+  - sudo apt-get install mssql-tools unixodbc-dev-utf16
+  - ln -sfn /opt/mssql-tools/bin/sqlcmd-13.0.1.0 /usr/bin/sqlcmd 
+  - ln -sfn /opt/mssql-tools/bin/bcp-13.0.1.0 /usr/bin/bcp
+  - sudo apt-get install docker
+  - sudo docker pull microsoft/mssql-server-linux
+  - sudo docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=yourStrong(!)Password' -p 1433:1433 -d microsoft/mssql-server-linux
+  - sudo pull rabbitmq
+  - sudo docker run -d --hostname my-rabbit  -p 8080:15672 rabbitmq:3-management
+  - sudo docker pull eventstore/eventstore
+  - sudo docker  run -d -it -p 2113:2113 -p 1113:1113 eventstore/eventstore
+
 script: 
   - ./build.sh All
