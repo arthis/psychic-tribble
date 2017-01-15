@@ -18,6 +18,6 @@ before_install:
   - sudo docker run -d --hostname my-rabbit  -p 8080:15672 rabbitmq:3-management
   - sudo docker pull eventstore/eventstore
   - sudo docker  run -d -it -p 2113:2113 -p 1113:1113 eventstore/eventstore
-
+ 
 script: 
   - ./build.sh All
