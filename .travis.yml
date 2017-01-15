@@ -8,8 +8,8 @@ sudo: required  # use the new container-based Travis infrastructure
 
 before_install:
   - chmod +x build.sh
-  - curl 'https://packages.microsoft.com/keys/microsoft.asc' | sudo apt-key add 
-  - curl 'https://packages.microsoft.com/config/ubuntu/16.04/prod.list' | sudo tee /etc/apt/sources.list.d/msprod.list
+  - sudo curl 'https://packages.microsoft.com/keys/microsoft.asc' | sudo apt-key add 
+  - sudo curl 'https://packages.microsoft.com/config/ubuntu/16.04/prod.list' | sudo tee /etc/apt/sources.list.d/msprod.list
   - sudo apt-get update 
   - sudo apt-get install mssql-tools unixodbc-dev-utf16
   - ln -sfn /opt/mssql-tools/bin/sqlcmd-13.0.1.0 /usr/bin/sqlcmd 
