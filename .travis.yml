@@ -12,7 +12,7 @@ before_install:
   - sudo sh -c 'echo "deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/mssql-ubuntu-vivid-release/ vivid main" > /etc/apt/sources.list.d/mssqlpreview.list'
   - sudo sudo apt-key adv --keyserver apt-mo.trafficmanager.net --recv-keys 417A0893
   - sudo apt-get update
-  - ACCEPT_EULA=Y sudo apt-get install msodbcsql
+  - sudo ACCEPT_EULA=Y apt-get install msodbcsql
 
   # mssql tools
   - sudo curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
