@@ -1,41 +1,29 @@
-[![Issue Stats](http://issuestats.com/github/fsprojects/ProjectScaffold/badge/issue)](http://issuestats.com/github/fsprojects/ProjectScaffold)
-[![Issue Stats](http://issuestats.com/github/fsprojects/ProjectScaffold/badge/pr)](http://issuestats.com/github/fsprojects/ProjectScaffold)
+[![Issue Stats](http://issuestats.com/github/arthis/psychic-tribble/badge/issue)](http://issuestats.com/github/arthis/psychic-tribble)
+[![Issue Stats](http://issuestats.com/github/arthis/psychic-tribble/badge/pr)](http://issuestats.com/github/arthis/psychic-tribble)
 
-# ProjectScaffold
+# Psychc trouble
 
-This project can be used to scaffold a prototypical .NET solution including file system layout and tooling. This includes a build process that: 
+aims to test dot net core on ubuntu using a prototypal Event Based application
 
-* updates all AssemblyInfo files
-* compiles the application and runs all test projects
-* generates [SourceLinks](https://github.com/ctaggart/SourceLink)
-* generates API docs based on XML document tags
-* generates [documentation based on Markdown files](http://fsprojects.github.io/ProjectScaffold/writing-docs.html)
-* generates [NuGet](http://www.nuget.org) packages
-* and allows a simple [one step release process](http://fsprojects.github.io/ProjectScaffold/release-process.html).
-
-In order to start the scaffolding process run 
-
-    > build.cmd // on windows    
-    $ ./build.sh  // on unix
-    
-Read the [Getting started tutorial](http://fsprojects.github.io/ProjectScaffold/index.html#Getting-started) to learn more.
-
-Documentation: http://fsprojects.github.io/ProjectScaffold
+keyword DDD, ES, CQRS, GetEventStore, RabbitMQ, MSSql
 
 ## Requirements
 
-ProjectScaffold requires a local git installation. You can download git from [Git Downloads](https://git-scm.com/downloads).
+Psychic tribles requires a local git installation. You can download git from [Git Downloads](https://git-scm.com/downloads).
+It requires 
+* dotnet core 1.0.0-preview2-1-003177 
+
+The other requirements are described in the travis.yml file
+
 
 ## Build Status
 
-Mono | .NET
----- | ----
-[![Mono CI Build Status](https://img.shields.io/travis/fsprojects/ProjectScaffold/master.svg)](https://travis-ci.org/fsprojects/ProjectScaffold) | [![.NET Build Status](https://img.shields.io/appveyor/ci/fsgit/ProjectScaffold/master.svg)](https://ci.appveyor.com/project/fsgit/projectscaffold)
+ .NET
+ ----
+(https://travis-ci.org/arthis/psychic-tribble) | [![.NET Build Status](https://travis-ci.org/arthis/psychic-tribble.svg?branch=master)](https://ci.appveyor.com/project/arthis/psychic-tribble)
 
 ## Maintainer(s)
 
-- [@forki](https://github.com/forki)
-- [@pblasucci](https://github.com/pblasucci)
-- [@sergey-tihon](https://github.com/sergey-tihon)
+- [@arthis](https://github.com/arthis)
 
-The default maintainer account for projects under "fsprojects" is [@fsprojectsgit](https://github.com/fsprojectsgit) - F# Community Project Incubation Space (repo management)
+
