@@ -2,7 +2,7 @@ language: csharp
 mono: none
 os: "linux"
 dotnet: 1.0.0-preview2-1-003177 
-dist: trusty
+dist: xenial
 group: stable
 sudo: required  # use the new container-based Travis infrastructure 
 
