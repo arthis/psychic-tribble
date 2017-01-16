@@ -12,6 +12,7 @@ before_install:
   - sudo sh -c 'echo "deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/mssql-ubuntu-vivid-release/ vivid main" > /etc/apt/sources.list.d/mssqlpreview.list'
   - sudo sudo apt-key adv --keyserver apt-mo.trafficmanager.net --recv-keys 417A0893
   - sudo apt-get update
+  - sudo apt-get install libodbc1-utf16
   - sudo apt-get install unixodbc-utf16
   - sudo ACCEPT_EULA=Y apt-get install msodbcsql
 
