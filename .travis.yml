@@ -1,32 +1,13 @@
 language: csharp
 mono: none
 os: "linux"
-dotnet: 1.0.0-preview2-1-003177 
-dist: xenial
 group: stable
 sudo: required  # use the new container-based Travis infrastructure 
 
-before_install:
-  - chmod +x build.sh
-  # msodbcsql
-  - sudo sh -c 'echo "deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/mssql-ubuntu-vivid-release/ vivid main" > /etc/apt/sources.list.d/mssqlpreview.list'
-  - sudo sudo apt-key adv --keyserver apt-mo.trafficmanager.net --recv-keys 417A0893
-  - sudo apt-get update
-  - sudo apt-get install libodbc1-utf16
-  - sudo apt-get install unixodbc-utf16
-  - sudo ACCEPT_EULA=Y apt-get install msodbcsql
+services:
+  - docker
 
-  # mssql tools
-  - sudo curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-  - sudo curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list | sudo tee /etc/apt/sources.list.d/msprod.list
-  - sudo apt-get update 
-  - sudo apt-get install unixodbc-dev-utf16 #this step is optional but recommended*
-  - sudo apt-get install mssql-tools unixodbc-dev-utf16
-  - ln -sfn /opt/mssql-tools/bin/sqlcmd-13.0.1.0 /usr/bin/sqlcmd 
-  - ln -sfn /opt/mssql-tools/bin/bcp-13.0.1.0 /usr/bin/bcp
-  
-  # docker
-  - sudo apt-get install docker
+before_install:
   # mssql server image
   - sudo docker pull microsoft/mssql-server-linux
   - sudo docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=yourStrong(!)Password' -p 1433:1433 -d microsoft/mssql-server-linux
@@ -36,6 +17,10 @@ before_install:
   # eventStore image
   - sudo docker pull eventstore/eventstore
   - sudo docker  run -d -it -p 2113:2113 -p 1113:1113 eventstore/eventstore
- 
-script: 
-  - ./build.sh All
+
+install:
+  - docker build -t arthis/psychic-tribble .
+
+
+  
+
