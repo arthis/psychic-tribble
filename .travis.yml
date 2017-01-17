@@ -9,14 +9,14 @@ services:
 
 before_install:
   # mssql server image
-  - sudo docker pull microsoft/mssql-server-linux
-  - sudo docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=yourStrong(!)Password' -p 1433:1433 -d microsoft/mssql-server-linux
+  - docker pull microsoft/mssql-server-linux
+  - docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=yourStrong(!)Password' -p 1433:1433 -d microsoft/mssql-server-linux
   # rabbitmq image
-  - sudo pull rabbitmq
-  - sudo docker run -d --hostname my-rabbit  -p 8080:15672 rabbitmq:3-management
+  - pull rabbitmq
+  - docker run -d --hostname my-rabbit  -p 8080:15672 rabbitmq:3-management
   # eventStore image
-  - sudo docker pull eventstore/eventstore
-  - sudo docker  run -d -it -p 2113:2113 -p 1113:1113 eventstore/eventstore
+  - docker pull eventstore/eventstore
+  - docker  run -d -it -p 2113:2113 -p 1113:1113 eventstore/eventstore
 
 install:
   - docker build -t arthis/psychic-tribble .
