@@ -5,8 +5,8 @@ GO
 
 IF EXISTS(select * from sys.databases where name='{{dbName}}')
 BEGIN
-	alter database {{dbName}} set single_user with rollback immediate
-	DROP DATABASE {{dbName}}
+	alter database [{{dbName}}] set single_user with rollback immediate
+	DROP DATABASE [{{dbName}}]
 END
 
 /****** Object:  Database [{{dbName}}]    Script Date: 08/04/2016 09:12:54 ******/

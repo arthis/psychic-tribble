@@ -32,7 +32,7 @@ open SourceLink
 
 // The name of the project
 // (used by attributes in AssemblyInfo, name of a NuGet package and directory in 'src')
-let project = "RessourcesLocalisees"
+let project = "Eclosing.Core"
 
 // Short summary of the project
 // (used as description in AssemblyInfo and as a short summary for NuGet package)
@@ -94,11 +94,18 @@ let runTests =  bool.Parse(getProperty "RunTests" "true")
 let verbosity = getProperty "Verbosity" "detailed"
 
 let nameDatabase = sprintf "%s_%s_%s"(getProperty "NameDatabase" project) Environment.MachineName deploymentEnvironment
-let dataPathBaseDeDonnees = getProperty "DataPathBaseDeDonnees" (sprintf "d:\data\%s" project)
-let logPathBaseDeDonnees = getProperty "LogPathBaseDeDonnees" (sprintf "d:\data\%s" project)
-let serverDB = getProperty "ServerDB" "Metamorph"
-let loginDB = getProperty "LoginDB" "dev"
-let passwordDB = getProperty "PasswordDB" "lmc-e-2016"
+
+let dataPathBaseDeDonnees = getProperty "DataPathBaseDeDonnees" (sprintf "%s/data/%s" solutionDir project)
+
+if (dataPathBaseDeDonnees = sprintf "%s/data/%s" solutionDir project) then
+    Path.Combine( solutionDir,"data")
+    |> Directory.CreateDirectory
+    |> ignore
+
+let logPathBaseDeDonnees = getProperty "LogPathBaseDeDonnees" (sprintf "%s/data/%s" solutionDir project)
+let serverDB = getProperty "ServerDB" "localhost"
+let loginDB = getProperty "LoginDB" "sa"
+let passwordDB = getProperty "PasswordDB" "yourStrong(!)Password"
 
 let buildDir  = Path.Combine(solutionDir,"bin", deploymentEnvironment)
 let buildServiceDir  = Path.Combine(buildDir,sprintf "%s.Service" project   ) 
@@ -250,10 +257,10 @@ let buildDBTest buildDBPath  loginDB passwordDB serverDB =
     |> Seq.iter ( fun f ->
 
         log <| sprintf " running sql script : %s" f
-        let cmdParams = sprintf "-b -U %s -P %s -S %s -i \"%s\" -f 65001" loginDB passwordDB serverDB f
+        let cmdParams = sprintf "-b -U %s -P %s -S %s -i \"%s\" " loginDB passwordDB serverDB f
 
         let startProcess (x: Diagnostics.ProcessStartInfo)  = 
-            x.FileName <- "\"C:\\Program Files (x86)\\Microsoft SQL Server\\Client SDK\\ODBC\\130\\Tools\\Binn\\sqlcmd.exe\""
+            x.FileName <- "sqlcmd"
             x.Arguments <-cmdParams
 
         let result = ExecProcessWithLambdas startProcess (TimeSpan.FromSeconds(float <| 30)) false  log log 
@@ -290,7 +297,13 @@ let build() =
         dotnet' "restore" <| TimeSpan.FromSeconds(float <| 120)
         dotnet' "build --configuration Release" <| TimeSpan.FromSeconds(float <| 60)
     )
-   
+
+    let fromDir = solutionDir </> "src" </> "Eclosing.Core.DB"
+    let toDir = solutionDir </> "bin" </> deploymentEnvironment </> "Eclosing.Core.DB"
+    log <| sprintf "from dir %s to dir %s" fromDir toDir 
+    CopyDir toDir fromDir (fun x -> true)
+
+
 Target "Build" (fun _ ->
     build()
     

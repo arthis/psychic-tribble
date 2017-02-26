@@ -8,15 +8,6 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 417A0893
 RUN apt-get update && apt-get install -y dotnet-dev-1.0.0-preview2.1-003177
 
 
-# mssql tools
-RUN curl https://packages.microsoft.com/keys/microsoft.asc |  apt-key add - \
-    && curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list | tee /etc/apt/sources.list.d/msprod.list
-
-RUN apt-get update -y \
-    && ACCEPT_EULA=Y apt-get install -y unixodbc-dev-utf16 \
-    mssql-tools 
-RUN ln -sfn /opt/mssql-tools/bin/sqlcmd-13.0.1.0 /usr/bin/sqlcmd \
-    && ln -sfn /opt/mssql-tools/bin/bcp-13.0.1.0 /usr/bin/bcp
 
 # # docker images
 # RUN apt-get install -y docker 
@@ -30,7 +21,8 @@ RUN ln -sfn /opt/mssql-tools/bin/sqlcmd-13.0.1.0 /usr/bin/sqlcmd \
 
 # copy and build application
 
-#Install Mono to run fake
+#Install Mono ti run fake
+
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF 
 RUN echo "deb http://download.mono-project.com/repo/debian wheezy main" | tee /etc/apt/sources.list.d/mono-xamarin.list 
 RUN apt-get update -y \
@@ -38,4 +30,5 @@ RUN apt-get update -y \
 
 COPY . /
 
-RUN ./build.sh
+RUN ./build.sh RunTests="false" ResetDB="false"
+

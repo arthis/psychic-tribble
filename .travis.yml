@@ -18,8 +18,11 @@ before_install:
   - docker pull eventstore/eventstore
   - docker  run -d -it -p 2113:2113 -p 1113:1113 eventstore/eventstore
 
-install:
+script :
   - docker build -t arthis/psychic-tribble .
+  - docker run -d arthis/psychic-tribble
+
+  
 
 
   
