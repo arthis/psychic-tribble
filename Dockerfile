@@ -13,7 +13,9 @@ RUN curl https://packages.microsoft.com/keys/microsoft.asc |  apt-key add - \
     && curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list | tee /etc/apt/sources.list.d/msprod.list
 
 RUN apt-get update -y \
-    && ACCEPT_EULA=Y apt-get install -y unixodbc-dev-utf16 \
+
+    && ACCEPT_EULA=Y apt-get install -y odbcinst1debian2-utf16 \
+    unixodbc-dev-utf16 \
     mssql-tools 
 RUN ln -sfn /opt/mssql-tools/bin/sqlcmd-13.0.1.0 /usr/bin/sqlcmd \
     && ln -sfn /opt/mssql-tools/bin/bcp-13.0.1.0 /usr/bin/bcp
